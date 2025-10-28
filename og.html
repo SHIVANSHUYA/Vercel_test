@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AI Health Planner</title>
+
+    <link
+      rel="icon"
+      href="https://www.ryangroup.org/public/images/front_end/SiteSetting/favicon_1632972772.png"
+      sizes="32x32"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 100%;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  display: flex;
+  gap: 3vw;
+  margin-left: 10px;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+.container > .form {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.container > .result-div {
+  width: 60%;
+  padding: 2rem;
+  background-color: #292929;
+  border-radius: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #00ffcc;
+}
+
+label {
+  font-weight: 500;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+  font-size: 1rem;
+}
+
+button {
+  margin-top: 1rem;
+  background: #00ffcc;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background: #00d4aa;
+}
+
+.result {
+  margin-top: 2rem;
+  background: #292929;
+  padding: 1rem;
+  border-radius: 10px;
+  line-height: 1.6;
+}
+
+.status {
+  margin-top: 1rem;
+  text-align: center;
+  font-style: italic;
+  color: #00ffcc;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.result h2,
+.result h3 {
+  color: #00ffcc;
+  margin-top: 1.2rem;
+}
+
+.result hr {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 1rem 0;
+}
+
+.result table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.result th,
+.result td {
+  border: 1px solid #444;
+  padding: 8px;
+  text-align: left;
+}
+
+.result th {
+  background-color: #222;
+  color: #00ffcc;
+}
+
+.result tr:nth-child(even) {
+  background-color: #181818;
+}
+
+.result tr:hover {
+  background-color: #2c2c2c;
+}
+
+#downloadBtn {
+  display: none;
+  margin-top: 1.5rem;
+  background: #00ffcc;
+  color: #000;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 0.7rem;
+  border: none;
+  cursor: pointer;
+}
+
+#downloadBtn:hover {
+  background: #00d4aa;
+}
+
+/* PDF-friendly wrapper */
+.pdf-export {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* ===== RESPONSIVE MAGIC ===== */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  .container > .form,
+  .container > .result-div {
+    width: 100%;
+  }
+  .container > .result-div {
+    width: 83%;
+  }
+
+  input,
+  select,
+  button {
+    font-size: 0.95rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 0.9rem;
+  }
+
+  .container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  input,
+  select,
+  button {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  .result {
+    font-size: 0.9rem;
+    width: 70%;
+  }
+
+  .result table th,
+  .result table td {
+    font-size: 0.85rem;
+    padding: 6px;
+  }
+}
+
+    </style>>
+
+  </head>
+
+  <body>
+    <h1>AI Health Planner</h1>
+    <div class="container">
+      <!-- Same structure -->
+      <div class="form">
+        <label for="weight">Weight (kg)</label>
+        <input type="number" id="weight" placeholder="Enter weight in kg" />
+
+        <label for="height">Height (cm)</label>
+        <input type="number" id="height" placeholder="Enter height in cm" />
+
+        <label for="age">Age</label>
+        <input type="number" id="age" placeholder="Enter your age" />
+
+        <label for="gender">Gender</label>
+        <select id="gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="diet">Diet Preference</label>
+        <select id="diet">
+          <option value="vegetarian">Vegetarian</option>
+          <option value="non-vegetarian">Non-Vegetarian</option>
+          <option value="both">Both</option>
+        </select>
+
+        <label for="exercise">Exercise Level</label>
+        <select id="exercise">
+          <option value="sedentary">Sedentary</option>
+          <option value="light">Light</option>
+          <option value="moderate">Moderate</option>
+          <option value="active">Active</option>
+        </select>
+
+        <button id="calculateBtn">Get My BMI & AI Suggestions</button>
+        <div class="status" id="status"></div>
+      </div>
+
+      <div class="result-div">
+        <div class="result" id="result">
+          <div class="status" id="status_in_result"></div>
+          <button id="downloadBtn" onclick="downloadPDF()">Download PDF</button>
+          <div id="pdfContent" class="pdf-export" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disable DevTools -->
+    <script>
+      document.addEventListener("contextmenu", e => e.preventDefault());
+      document.addEventListener("keydown", e => {
+        if (
+          e.key === "F12" ||
+          (e.ctrlKey && e.shiftKey && ["I", "J", "C", "U"].includes(e.key)) ||
+          (e.ctrlKey && e.key === "U")
+        ) {
+          e.preventDefault();
+          alert("Code inspection is disabled 🔒");
+        }
+      });
+    </script>
+
+    <!-- Main Logic -->
+    <script>
+      const { jsPDF } = window.jspdf;
+
+      function calculateBMI(weight, height) {
+        const heightM = height / 100;
+        return (weight / (heightM * heightM)).toFixed(1);
+      }
+
+      function getBMICategory(bmi) {
+        if (bmi < 18.5) return "Underweight";
+        if (bmi < 24.9) return "Normal weight";
+        if (bmi < 29.9) return "Overweight";
+        return "Obese";
+      }
+
+      async function getAISuggestions(prompt) {
+        try {
+          const res = await fetch("/api/openrouter", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt }),
+          });
+
+          if (!res.ok) throw new Error(await res.text());
+          const data = await res.json();
+          return data.output;
+        } catch (err) {
+          console.error(err);
+          return "AI suggestions could not be loaded.";
+        }
+      }
+
+      document
+        .getElementById("calculateBtn")
+        .addEventListener("click", async () => {
+          const weight = parseFloat(document.getElementById("weight").value);
+          const height = parseFloat(document.getElementById("height").value);
+          const age = parseInt(document.getElementById("age").value);
+          const gender = document.getElementById("gender").value;
+          const diet = document.getElementById("diet").value;
+          const exercise = document.getElementById("exercise").value;
+
+          if (!weight || !height || !age) {
+            alert("Please fill all fields.");
+            return;
+          }
+
+          const bmi = calculateBMI(weight, height);
+          const category = getBMICategory(bmi);
+
+          const userPrompt = `
+I am ${age} years old, ${gender}.
+My weight is ${weight} kg and height is ${height} cm.
+My BMI is ${bmi} (${category}).
+I prefer a ${diet} diet and my exercise level is ${exercise}.
+Give me a detailed diet chart, workout plan, and health tips suitable for me.
+`;
+
+          const btn = document.getElementById("calculateBtn");
+          const status = document.getElementById("status");
+          const status_in_result = document.getElementById("status_in_result");
+          const resultDiv = document.getElementById("result");
+          const pdfContent = document.getElementById("pdfContent");
+          const downloadBtn = document.getElementById("downloadBtn");
+
+          btn.disabled = true;
+          btn.innerText = "Processing...";
+          status.innerText = "Fetching AI insights...";
+          status_in_result.innerText = "Fetching AI insights...";
+
+          const aiSuggestions = await getAISuggestions(userPrompt);
+
+          status.innerText = "Response received ✅";
+          status_in_result.innerText = "Response received ✅";
+
+          const aiSuggestionsHTML = marked.parse(aiSuggestions);
+
+          resultDiv.querySelector(".final-result")?.remove();
+     const renderedHtml = `
+      <div class="final-result" style="background:#121212;color:#e0e0e0;padding:20px;border-radius:10px;">
+        <h3 style="color:#00ffcc;margin-top:0">Your BMI: ${bmi} (${category})</h3>
+        <p><strong>Age:</strong> ${age}</p>
+        <p><strong>Gender:</strong> ${gender}</p>
+        <p><strong>Height:</strong> ${height} cm</p>
+        <p><strong>Weight:</strong> ${weight} kg</p>
+        <hr style="border-top:1px solid #444;">
+        <h4 style="color:#00ffcc;">AI Health Suggestions</h4>
+        <div>${aiSuggestionsHTML}</div>
+      </div>
+    `;
+
+    // ✅ Insert once
+    status_in_result.insertAdjacentHTML("afterend", renderedHtml);
+
+    // ✅ Update hidden PDF content (no duplication visually)
+    pdfContent.innerHTML = renderedHtml;
+
+    downloadBtn.style.display = "inline-block";
+
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerText = "Get My BMI & AI Suggestions";
+      status.innerText = "";
+      status_in_result.innerText = "";
+    }, 900);
+  });
+
+  async function downloadPDF() {
+  const pdfContent = document.getElementById("pdfContent");
+  if (!pdfContent || pdfContent.innerHTML.trim() === "") {
+    alert("Nothing to export. Generate the report first.");
+    return;
+  }
+
+  // ✅ Temporarily show hidden content for rendering
+  const wasHidden = pdfContent.style.display === "none";
+  if (wasHidden) pdfContent.style.display = "block";
+
+  // 🎨 Apply clean PDF-only styles (scoped and temporary)
+  pdfContent.classList.add("pdf-style-temp");
+
+  const styleTag = document.createElement("style");
+  styleTag.id = "pdfTempStyle";
+  styleTag.textContent = `
+    .pdf-style-temp {
+      background: #ffffff !important;
+      color: #222 !important;
+      font-family: 'Poppins', 'Segoe UI', sans-serif !important;
+      font-size: 11pt !important;
+      line-height: 1.5 !important;
+      padding: 25px !important;
+      border-radius: 12px !important;
+      width: 700px !important;
+      margin: auto !important;
+    }
+    .pdf-style-temp h3, .pdf-style-temp h4 {
+      color: #00bfa6 !important;
+      margin-bottom: 8px !important;
+    }
+    .pdf-style-temp p, .pdf-style-temp li {
+      color: #333 !important;
+      margin-bottom: 6px !important;
+    }
+    .pdf-style-temp strong {
+      color: #00796b !important;
+    }
+    .pdf-style-temp hr {
+      border: none !important;
+      border-top: 1px solid #ddd !important;
+      margin: 12px 0 !important;
+    }
+    .pdf-style-temp ul {
+      margin-left: 20px !important;
+    }
+  `;
+  document.head.appendChild(styleTag);
+
+  await new Promise((r) => requestAnimationFrame(r));
+
+  try {
+    const scale = 2;
+    const canvas = await html2canvas(pdfContent, {
+      scale,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollY: -window.scrollY,
+    });
+
+    // 🩵 Safe redraw
+    const safeCanvas = document.createElement("canvas");
+    safeCanvas.width = canvas.width;
+    safeCanvas.height = canvas.height;
+    const ctx = safeCanvas.getContext("2d");
+    ctx.drawImage(canvas, 0, 0);
+    const imgData = safeCanvas.toDataURL("image/png");
+
+    // 🧾 Create PDF
+    const pdf = new jsPDF({ unit: "pt", format: "a4", compress: true });
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pdfWidth - 40; // padding
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let position = 20;
+    let heightLeft = imgHeight;
+
+    pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight + 20;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+    }
+
+    const filename = `AI_Health_Report_${new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace(/[:T]/g, "-")}.pdf`;
+    pdf.save(filename);
+  } catch (err) {
+    console.error("PDF export failed:", err);
+    alert("PDF export failed. See console for details.");
+  } finally {
+    // ♻️ Clean up temporary styles
+    pdfContent.classList.remove("pdf-style-temp");
+    const tempStyle = document.getElementById("pdfTempStyle");
+    if (tempStyle) tempStyle.remove();
+    if (wasHidden) pdfContent.style.display = "none";
+  }
+
+
+        };
+    </script>
+  </body>
+</html>
+
+
