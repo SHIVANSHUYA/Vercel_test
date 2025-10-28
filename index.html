@@ -15,229 +15,227 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-body {
-  background-color: #121212;
-  color: #e0e0e0;
-  font-family: "Segoe UI", sans-serif;
-  margin: 0;
-  padding: 0;
-}
+      body {
+        background-color: #121212;
+        color: #e0e0e0;
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
 
-.container {
-  max-width: 100%;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-  display: flex;
-  gap: 3vw;
-  margin-left: 10px;
-  margin-right: 10px;
-  transition: all 0.3s ease;
-}
+      .container {
+        max-width: 100%;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #1e1e1e;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+        display: flex;
+        gap: 3vw;
+        margin-left: 10px;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+      }
 
-.container > .form {
-  width: 40%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
+      .container > .form {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
 
-.container > .result-div {
-  width: 60%;
-  padding: 2rem;
-  background-color: #292929;
-  border-radius: 20px;
-}
+      .container > .result-div {
+        width: 60%;
+        padding: 2rem;
+        background-color: #292929;
+        border-radius: 20px;
+      }
 
-h1 {
-  text-align: center;
-  color: #00ffcc;
-}
+      h1 {
+        text-align: center;
+        color: #00ffcc;
+      }
 
-label {
-  font-weight: 500;
-}
+      label {
+        font-weight: 500;
+      }
 
-input,
-select,
-button {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.7rem;
-  border-radius: 8px;
-  border: none;
-  background-color: #2c2c2c;
-  color: #e0e0e0;
-  font-size: 1rem;
-}
+      input,
+      select,
+      button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.7rem;
+        border-radius: 8px;
+        border: none;
+        background-color: #2c2c2c;
+        color: #e0e0e0;
+        font-size: 1rem;
+      }
 
-button {
-  margin-top: 1rem;
-  background: #00ffcc;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
+      button {
+        margin-top: 1rem;
+        background: #00ffcc;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+      }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
 
-button:hover:not(:disabled) {
-  background: #00d4aa;
-}
+      button:hover:not(:disabled) {
+        background: #00d4aa;
+      }
 
-.result {
-  margin-top: 2rem;
-  background: #292929;
-  padding: 1rem;
-  border-radius: 10px;
-  line-height: 1.6;
-}
+      .result {
+        margin-top: 2rem;
+        background: #292929;
+        padding: 1rem;
+        border-radius: 10px;
+        line-height: 1.6;
+      }
 
-.status {
-  margin-top: 1rem;
-  text-align: center;
-  font-style: italic;
-  color: #00ffcc;
-  animation: fadeIn 0.3s ease-in-out;
-}
+      .status {
+        margin-top: 1rem;
+        text-align: center;
+        font-style: italic;
+        color: #00ffcc;
+        animation: fadeIn 0.3s ease-in-out;
+      }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
 
-.result h2,
-.result h3 {
-  color: #00ffcc;
-  margin-top: 1.2rem;
-}
+      .result h2,
+      .result h3 {
+        color: #00ffcc;
+        margin-top: 1.2rem;
+      }
 
-.result hr {
-  border: none;
-  border-top: 1px solid #444;
-  margin: 1rem 0;
-}
+      .result hr {
+        border: none;
+        border-top: 1px solid #444;
+        margin: 1rem 0;
+      }
 
-.result table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
+      .result table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
 
-.result th,
-.result td {
-  border: 1px solid #444;
-  padding: 8px;
-  text-align: left;
-}
+      .result th,
+      .result td {
+        border: 1px solid #444;
+        padding: 8px;
+        text-align: left;
+      }
 
-.result th {
-  background-color: #222;
-  color: #00ffcc;
-}
+      .result th {
+        background-color: #222;
+        color: #00ffcc;
+      }
 
-.result tr:nth-child(even) {
-  background-color: #181818;
-}
+      .result tr:nth-child(even) {
+        background-color: #181818;
+      }
 
-.result tr:hover {
-  background-color: #2c2c2c;
-}
+      .result tr:hover {
+        background-color: #2c2c2c;
+      }
 
-#downloadBtn {
-  display: none;
-  margin-top: 1.5rem;
-  background: #00ffcc;
-  color: #000;
-  font-weight: bold;
-  border-radius: 8px;
-  padding: 0.7rem;
-  border: none;
-  cursor: pointer;
-}
+      #downloadBtn {
+        display: none;
+        margin-top: 1.5rem;
+        background: #00ffcc;
+        color: #000;
+        font-weight: bold;
+        border-radius: 8px;
+        padding: 0.7rem;
+        border: none;
+        cursor: pointer;
+      }
 
-#downloadBtn:hover {
-  background: #00d4aa;
-}
+      #downloadBtn:hover {
+        background: #00d4aa;
+      }
 
-/* PDF-friendly wrapper */
-.pdf-export {
-  padding: 20px;
-  border-radius: 10px;
-}
+      /* PDF-friendly wrapper */
+      .pdf-export {
+        padding: 20px;
+        border-radius: 10px;
+      }
 
-/* ===== RESPONSIVE MAGIC ===== */
-@media (max-width: 992px) {
-  .container {
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1.5rem;
-  }
+      /* ===== RESPONSIVE MAGIC ===== */
+      @media (max-width: 992px) {
+        .container {
+          flex-direction: column;
+          gap: 2rem;
+          padding: 1.5rem;
+        }
 
-  .container > .form,
-  .container > .result-div {
-    width: 100%;
-  }
-  .container > .result-div {
-    width: 83%;
-  }
+        .container > .form,
+        .container > .result-div {
+          width: 100%;
+        }
+        .container > .result-div {
+          width: 83%;
+        }
 
-  input,
-  select,
-  button {
-    font-size: 0.95rem;
-  }
+        input,
+        select,
+        button {
+          font-size: 0.95rem;
+        }
 
-  h1 {
-    font-size: 1.8rem;
-  }
-}
+        h1 {
+          font-size: 1.8rem;
+        }
+      }
 
-@media (max-width: 600px) {
-  body {
-    font-size: 0.9rem;
-  }
+      @media (max-width: 600px) {
+        body {
+          font-size: 0.9rem;
+        }
 
-  .container {
-    margin: 1rem;
-    padding: 1rem;
-  }
+        .container {
+          margin: 1rem;
+          padding: 1rem;
+        }
 
-  h1 {
-    font-size: 1.5rem;
-  }
+        h1 {
+          font-size: 1.5rem;
+        }
 
-  input,
-  select,
-  button {
-    font-size: 0.9rem;
-    padding: 0.6rem;
-  }
+        input,
+        select,
+        button {
+          font-size: 0.9rem;
+          padding: 0.6rem;
+        }
 
-  .result {
-    font-size: 0.9rem;
-    width: 70%;
-  }
+        .result {
+          font-size: 0.9rem;
+          width: 70%;
+        }
 
-  .result table th,
-  .result table td {
-    font-size: 0.85rem;
-    padding: 6px;
-  }
-}
-
+        .result table th,
+        .result table td {
+          font-size: 0.85rem;
+          padding: 6px;
+        }
+      }
     </style>
-
   </head>
 
   <body>
@@ -284,15 +282,15 @@ button:hover:not(:disabled) {
         <div class="result" id="result">
           <div class="status" id="status_in_result"></div>
           <button id="downloadBtn" onclick="downloadPDF()">Download PDF</button>
-          <div id="pdfContent" class="pdf-export" style="display:none;"></div>
+          <div id="pdfContent" class="pdf-export" style="display: none"></div>
         </div>
       </div>
     </div>
 
     <!-- Disable DevTools -->
     <script>
-      document.addEventListener("contextmenu", e => e.preventDefault());
-      document.addEventListener("keydown", e => {
+      document.addEventListener("contextmenu", (e) => e.preventDefault());
+      document.addEventListener("keydown", (e) => {
         if (
           e.key === "F12" ||
           (e.ctrlKey && e.shiftKey && ["I", "J", "C", "U"].includes(e.key)) ||
@@ -306,222 +304,342 @@ button:hover:not(:disabled) {
 
     <!-- Main Logic -->
     <script>
-      const { jsPDF } = window.jspdf;
-
-      function calculateBMI(weight, height) {
-        const heightM = height / 100;
-        return (weight / (heightM * heightM)).toFixed(1);
+      const _0x4251d5 = _0x2d83;
+      function _0x2d83(_0x484850, _0x52d9fd) {
+        const _0x5e5857 = _0x5e58();
+        return (
+          (_0x2d83 = function (_0x2d8388, _0x369c23) {
+            _0x2d8388 = _0x2d8388 - 0x14b;
+            let _0x33c7fb = _0x5e5857[_0x2d8388];
+            return _0x33c7fb;
+          }),
+          _0x2d83(_0x484850, _0x52d9fd)
+        );
       }
-
-      function getBMICategory(bmi) {
-        if (bmi < 18.5) return "Underweight";
-        if (bmi < 24.9) return "Normal weight";
-        if (bmi < 29.9) return "Overweight";
-        return "Obese";
+      function _0x5e58() {
+        const _0x3be108 = [
+          "querySelector",
+          "diet",
+          "getHeight",
+          "AI_Health_Report_",
+          "\x20diet\x20and\x20my\x20exercise\x20level\x20is\x20",
+          "calculateBtn",
+          "PNG",
+          "pdfTempStyle",
+          "scrollY",
+          "text",
+          "983682BkXiCW",
+          "Fetching\x20AI\x20insights...",
+          "result",
+          "\x20cm.\x0aMy\x20BMI\x20is\x20",
+          "Obese",
+          ")</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Age:</strong>\x20",
+          "weight",
+          "Please\x20fill\x20all\x20fields.",
+          "internal",
+          "toFixed",
+          "Normal\x20weight",
+          "\x0aI\x20am\x20",
+          "block",
+          "toDataURL",
+          "appendChild",
+          "age",
+          "application/json",
+          "\x0a\x20\x20\x20\x20.pdf-style-temp\x20{\x0a\x20\x20\x20\x20\x20\x20background:\x20#ffffff\x20!important;\x0a\x20\x20\x20\x20\x20\x20color:\x20#222\x20!important;\x0a\x20\x20\x20\x20\x20\x20font-family:\x20\x27Poppins\x27,\x20\x27Segoe\x20UI\x27,\x20sans-serif\x20!important;\x0a\x20\x20\x20\x20\x20\x20font-size:\x2011pt\x20!important;\x0a\x20\x20\x20\x20\x20\x20line-height:\x201.5\x20!important;\x0a\x20\x20\x20\x20\x20\x20padding:\x2025px\x20!important;\x0a\x20\x20\x20\x20\x20\x20border-radius:\x2012px\x20!important;\x0a\x20\x20\x20\x20\x20\x20width:\x20700px\x20!important;\x0a\x20\x20\x20\x20\x20\x20margin:\x20auto\x20!important;\x0a\x20\x20\x20\x20}\x0a\x20\x20\x20\x20.pdf-style-temp\x20h3,\x20.pdf-style-temp\x20h4\x20{\x0a\x20\x20\x20\x20\x20\x20color:\x20#00bfa6\x20!important;\x0a\x20\x20\x20\x20\x20\x20margin-bottom:\x208px\x20!important;\x0a\x20\x20\x20\x20}\x0a\x20\x20\x20\x20.pdf-style-temp\x20p,\x20.pdf-style-temp\x20li\x20{\x0a\x20\x20\x20\x20\x20\x20color:\x20#333\x20!important;\x0a\x20\x20\x20\x20\x20\x20margin-bottom:\x206px\x20!important;\x0a\x20\x20\x20\x20}\x0a\x20\x20\x20\x20.pdf-style-temp\x20strong\x20{\x0a\x20\x20\x20\x20\x20\x20color:\x20#00796b\x20!important;\x0a\x20\x20\x20\x20}\x0a\x20\x20\x20\x20.pdf-style-temp\x20hr\x20{\x0a\x20\x20\x20\x20\x20\x20border:\x20none\x20!important;\x0a\x20\x20\x20\x20\x20\x20border-top:\x201px\x20solid\x20#ddd\x20!important;\x0a\x20\x20\x20\x20\x20\x20margin:\x2012px\x200\x20!important;\x0a\x20\x20\x20\x20}\x0a\x20\x20\x20\x20.pdf-style-temp\x20ul\x20{\x0a\x20\x20\x20\x20\x20\x20margin-left:\x2020px\x20!important;\x0a\x20\x20\x20\x20}\x0a\x20\x20",
+          "2mLLyZX",
+          "inline-block",
+          "Response\x20received\x20✅",
+          "style",
+          "disabled",
+          "height",
+          "createElement",
+          "exercise",
+          "#ffffff",
+          "\x20years\x20old,\x20",
+          "width",
+          "addEventListener",
+          "save",
+          "pdfContent",
+          "image/png",
+          "31848ohFhWj",
+          "error",
+          "canvas",
+          "39947RbWbYG",
+          "output",
+          "innerText",
+          "195828GVKxKc",
+          "parse",
+          "json",
+          "jspdf",
+          "32faEISP",
+          "pageSize",
+          "getContext",
+          "Nothing\x20to\x20export.\x20Generate\x20the\x20report\x20first.",
+          "185jjjxnv",
+          "addPage",
+          "pdf-style-temp",
+          "status_in_result",
+          "</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Gender:</strong>\x20",
+          "/api/openrouter",
+          "none",
+          "value",
+          "409230wNsEgC",
+          "remove",
+          "405412OXBOSm",
+          "status",
+          "POST",
+          "addImage",
+          "textContent",
+          "add",
+          ".\x0aMy\x20weight\x20is\x20",
+          "getElementById",
+          ".\x0aGive\x20me\x20a\x20detailed\x20diet\x20chart,\x20workout\x20plan,\x20and\x20health\x20tips\x20suitable\x20for\x20me.\x0a",
+          "classList",
+          "stringify",
+          "head",
+          "innerHTML",
+          ").\x0aI\x20prefer\x20a\x20",
+          "insertAdjacentHTML",
+          "\x20kg</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<hr\x20style=\x22border-top:1px\x20solid\x20#444;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<h4\x20style=\x22color:#00ffcc;\x22>AI\x20Health\x20Suggestions</h4>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div>",
+          "Get\x20My\x20BMI\x20&\x20AI\x20Suggestions",
+          "display",
+          "1230930DCnBZS",
+          "trim",
+          ".pdf",
+        ];
+        _0x5e58 = function () {
+          return _0x3be108;
+        };
+        return _0x5e58();
       }
-
-      async function getAISuggestions(prompt) {
+      (function (_0x4d0ebd, _0x186e60) {
+        const _0x1c9e87 = _0x2d83,
+          _0x3dc4b3 = _0x4d0ebd();
+        while (!![]) {
+          try {
+            const _0xb0502f =
+              (-parseInt(_0x1c9e87(0x199)) / 0x1) *
+                (-parseInt(_0x1c9e87(0x187)) / 0x2) +
+              -parseInt(_0x1c9e87(0x19c)) / 0x3 +
+              -parseInt(_0x1c9e87(0x156)) / 0x4 +
+              (-parseInt(_0x1c9e87(0x14c)) / 0x5) *
+                (-parseInt(_0x1c9e87(0x196)) / 0x6) +
+              parseInt(_0x1c9e87(0x175)) / 0x7 +
+              (-parseInt(_0x1c9e87(0x1a0)) / 0x8) *
+                (parseInt(_0x1c9e87(0x154)) / 0x9) +
+              parseInt(_0x1c9e87(0x168)) / 0xa;
+            if (_0xb0502f === _0x186e60) break;
+            else _0x3dc4b3["push"](_0x3dc4b3["shift"]());
+          } catch (_0x8e78cc) {
+            _0x3dc4b3["push"](_0x3dc4b3["shift"]());
+          }
+        }
+      })(_0x5e58, 0x24f9d);
+      const { jsPDF } = window[_0x4251d5(0x19f)];
+      function calculateBMI(_0x4a7f3d, _0x5c48a) {
+        const _0x56ea5a = _0x4251d5,
+          _0x2fa12f = _0x5c48a / 0x64;
+        return (_0x4a7f3d / (_0x2fa12f * _0x2fa12f))[_0x56ea5a(0x17e)](0x1);
+      }
+      function getBMICategory(_0x3dd19b) {
+        const _0x1830e1 = _0x4251d5;
+        if (_0x3dd19b < 18.5) return "Underweight";
+        if (_0x3dd19b < 24.9) return _0x1830e1(0x17f);
+        if (_0x3dd19b < 29.9) return "Overweight";
+        return _0x1830e1(0x179);
+      }
+      async function getAISuggestions(_0x5ea02a) {
+        const _0x426cb1 = _0x4251d5;
         try {
-          const res = await fetch("/api/openrouter", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt }),
+          const _0x1b907e = await fetch(_0x426cb1(0x151), {
+            method: _0x426cb1(0x158),
+            headers: { "Content-Type": _0x426cb1(0x185) },
+            body: JSON[_0x426cb1(0x160)]({ prompt: _0x5ea02a }),
           });
-
-          if (!res.ok) throw new Error(await res.text());
-          const data = await res.json();
-          return data.output;
-        } catch (err) {
-          console.error(err);
-          return "AI suggestions could not be loaded.";
+          if (!_0x1b907e["ok"])
+            throw new Error(await _0x1b907e[_0x426cb1(0x174)]());
+          const _0x1d045b = await _0x1b907e[_0x426cb1(0x19e)]();
+          return _0x1d045b[_0x426cb1(0x19a)];
+        } catch (_0x254b57) {
+          return (
+            console[_0x426cb1(0x197)](_0x254b57),
+            "AI\x20suggestions\x20could\x20not\x20be\x20loaded."
+          );
         }
       }
-
-      document
-        .getElementById("calculateBtn")
-        .addEventListener("click", async () => {
-          const weight = parseFloat(document.getElementById("weight").value);
-          const height = parseFloat(document.getElementById("height").value);
-          const age = parseInt(document.getElementById("age").value);
-          const gender = document.getElementById("gender").value;
-          const diet = document.getElementById("diet").value;
-          const exercise = document.getElementById("exercise").value;
-
-          if (!weight || !height || !age) {
-            alert("Please fill all fields.");
+      document[_0x4251d5(0x15d)](_0x4251d5(0x170))[_0x4251d5(0x192)](
+        "click",
+        async () => {
+          const _0x40064f = _0x4251d5,
+            _0x3f2aaf = parseFloat(
+              document[_0x40064f(0x15d)](_0x40064f(0x17b))[_0x40064f(0x153)]
+            ),
+            _0x29fbe4 = parseFloat(
+              document[_0x40064f(0x15d)](_0x40064f(0x18c))[_0x40064f(0x153)]
+            ),
+            _0x69ca1a = parseInt(
+              document[_0x40064f(0x15d)](_0x40064f(0x184))[_0x40064f(0x153)]
+            ),
+            _0x22307 = document[_0x40064f(0x15d)]("gender")[_0x40064f(0x153)],
+            _0x49f187 = document[_0x40064f(0x15d)](_0x40064f(0x16c))[
+              _0x40064f(0x153)
+            ],
+            _0x4de059 = document[_0x40064f(0x15d)](_0x40064f(0x18e))[
+              _0x40064f(0x153)
+            ];
+          if (!_0x3f2aaf || !_0x29fbe4 || !_0x69ca1a) {
+            alert(_0x40064f(0x17c));
             return;
           }
-
-          const bmi = calculateBMI(weight, height);
-          const category = getBMICategory(bmi);
-
-          const userPrompt = `
-I am ${age} years old, ${gender}.
-My weight is ${weight} kg and height is ${height} cm.
-My BMI is ${bmi} (${category}).
-I prefer a ${diet} diet and my exercise level is ${exercise}.
-Give me a detailed diet chart, workout plan, and health tips suitable for me.
-`;
-
-          const btn = document.getElementById("calculateBtn");
-          const status = document.getElementById("status");
-          const status_in_result = document.getElementById("status_in_result");
-          const resultDiv = document.getElementById("result");
-          const pdfContent = document.getElementById("pdfContent");
-          const downloadBtn = document.getElementById("downloadBtn");
-
-          btn.disabled = true;
-          btn.innerText = "Processing...";
-          status.innerText = "Fetching AI insights...";
-          status_in_result.innerText = "Fetching AI insights...";
-
-          const aiSuggestions = await getAISuggestions(userPrompt);
-
-          status.innerText = "Response received ✅";
-          status_in_result.innerText = "Response received ✅";
-
-          const aiSuggestionsHTML = marked.parse(aiSuggestions);
-
-          resultDiv.querySelector(".final-result")?.remove();
-     const renderedHtml = `
-      <div class="final-result" style="background:#121212;color:#e0e0e0;padding:20px;border-radius:10px;">
-        <h3 style="color:#00ffcc;margin-top:0">Your BMI: ${bmi} (${category})</h3>
-        <p><strong>Age:</strong> ${age}</p>
-        <p><strong>Gender:</strong> ${gender}</p>
-        <p><strong>Height:</strong> ${height} cm</p>
-        <p><strong>Weight:</strong> ${weight} kg</p>
-        <hr style="border-top:1px solid #444;">
-        <h4 style="color:#00ffcc;">AI Health Suggestions</h4>
-        <div>${aiSuggestionsHTML}</div>
-      </div>
-    `;
-
-    // ✅ Insert once
-    status_in_result.insertAdjacentHTML("afterend", renderedHtml);
-
-    // ✅ Update hidden PDF content (no duplication visually)
-    pdfContent.innerHTML = renderedHtml;
-
-    downloadBtn.style.display = "inline-block";
-
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.innerText = "Get My BMI & AI Suggestions";
-      status.innerText = "";
-      status_in_result.innerText = "";
-    }, 900);
-  });
-
-  async function downloadPDF() {
-  const pdfContent = document.getElementById("pdfContent");
-  if (!pdfContent || pdfContent.innerHTML.trim() === "") {
-    alert("Nothing to export. Generate the report first.");
-    return;
-  }
-
-  // ✅ Temporarily show hidden content for rendering
-  const wasHidden = pdfContent.style.display === "none";
-  if (wasHidden) pdfContent.style.display = "block";
-
-  // 🎨 Apply clean PDF-only styles (scoped and temporary)
-  pdfContent.classList.add("pdf-style-temp");
-
-  const styleTag = document.createElement("style");
-  styleTag.id = "pdfTempStyle";
-  styleTag.textContent = `
-    .pdf-style-temp {
-      background: #ffffff !important;
-      color: #222 !important;
-      font-family: 'Poppins', 'Segoe UI', sans-serif !important;
-      font-size: 11pt !important;
-      line-height: 1.5 !important;
-      padding: 25px !important;
-      border-radius: 12px !important;
-      width: 700px !important;
-      margin: auto !important;
-    }
-    .pdf-style-temp h3, .pdf-style-temp h4 {
-      color: #00bfa6 !important;
-      margin-bottom: 8px !important;
-    }
-    .pdf-style-temp p, .pdf-style-temp li {
-      color: #333 !important;
-      margin-bottom: 6px !important;
-    }
-    .pdf-style-temp strong {
-      color: #00796b !important;
-    }
-    .pdf-style-temp hr {
-      border: none !important;
-      border-top: 1px solid #ddd !important;
-      margin: 12px 0 !important;
-    }
-    .pdf-style-temp ul {
-      margin-left: 20px !important;
-    }
-  `;
-  document.head.appendChild(styleTag);
-
-  await new Promise((r) => requestAnimationFrame(r));
-
-  try {
-    const scale = 2;
-    const canvas = await html2canvas(pdfContent, {
-      scale,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      scrollY: -window.scrollY,
-    });
-
-    // 🩵 Safe redraw
-    const safeCanvas = document.createElement("canvas");
-    safeCanvas.width = canvas.width;
-    safeCanvas.height = canvas.height;
-    const ctx = safeCanvas.getContext("2d");
-    ctx.drawImage(canvas, 0, 0);
-    const imgData = safeCanvas.toDataURL("image/png");
-
-    // 🧾 Create PDF
-    const pdf = new jsPDF({ unit: "pt", format: "a4", compress: true });
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pdfWidth - 40; // padding
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let position = 20;
-    let heightLeft = imgHeight;
-
-    pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
-
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight + 20;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight;
-    }
-
-    const filename = `AI_Health_Report_${new Date()
-      .toISOString()
-      .slice(0, 19)
-      .replace(/[:T]/g, "-")}.pdf`;
-    pdf.save(filename);
-  } catch (err) {
-    console.error("PDF export failed:", err);
-    alert("PDF export failed. See console for details.");
-  } finally {
-    // ♻️ Clean up temporary styles
-    pdfContent.classList.remove("pdf-style-temp");
-    const tempStyle = document.getElementById("pdfTempStyle");
-    if (tempStyle) tempStyle.remove();
-    if (wasHidden) pdfContent.style.display = "none";
-  }
-
-
-        };
+          const _0x268532 = calculateBMI(_0x3f2aaf, _0x29fbe4),
+            _0x521480 = getBMICategory(_0x268532),
+            _0x2c2138 =
+              _0x40064f(0x180) +
+              _0x69ca1a +
+              _0x40064f(0x190) +
+              _0x22307 +
+              _0x40064f(0x15c) +
+              _0x3f2aaf +
+              "\x20kg\x20and\x20height\x20is\x20" +
+              _0x29fbe4 +
+              _0x40064f(0x178) +
+              _0x268532 +
+              "\x20(" +
+              _0x521480 +
+              _0x40064f(0x163) +
+              _0x49f187 +
+              _0x40064f(0x16f) +
+              _0x4de059 +
+              _0x40064f(0x15e),
+            _0x393445 = document["getElementById"](_0x40064f(0x170)),
+            _0x4f5646 = document[_0x40064f(0x15d)](_0x40064f(0x157)),
+            _0x214d95 = document["getElementById"](_0x40064f(0x14f)),
+            _0x5ea66f = document[_0x40064f(0x15d)](_0x40064f(0x177)),
+            _0x10e784 = document["getElementById"](_0x40064f(0x194)),
+            _0x4c000e = document[_0x40064f(0x15d)]("downloadBtn");
+          (_0x393445[_0x40064f(0x18b)] = !![]),
+            (_0x393445[_0x40064f(0x19b)] = "Processing..."),
+            (_0x4f5646[_0x40064f(0x19b)] = "Fetching\x20AI\x20insights..."),
+            (_0x214d95[_0x40064f(0x19b)] = _0x40064f(0x176));
+          const _0x4aa2e9 = await getAISuggestions(_0x2c2138);
+          (_0x4f5646["innerText"] = "Response\x20received\x20✅"),
+            (_0x214d95["innerText"] = _0x40064f(0x189));
+          const _0x61800d = marked[_0x40064f(0x19d)](_0x4aa2e9);
+          _0x5ea66f[_0x40064f(0x16b)](".final-result")?.["remove"]();
+          const _0x244dcc =
+            "\x0a\x20\x20\x20\x20\x20\x20<div\x20class=\x22final-result\x22\x20style=\x22background:#121212;color:#e0e0e0;padding:20px;border-radius:10px;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<h3\x20style=\x22color:#00ffcc;margin-top:0\x22>Your\x20BMI:\x20" +
+            _0x268532 +
+            "\x20(" +
+            _0x521480 +
+            _0x40064f(0x17a) +
+            _0x69ca1a +
+            _0x40064f(0x150) +
+            _0x22307 +
+            "</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Height:</strong>\x20" +
+            _0x29fbe4 +
+            "\x20cm</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Weight:</strong>\x20" +
+            _0x3f2aaf +
+            _0x40064f(0x165) +
+            _0x61800d +
+            "</div>\x0a\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20";
+          _0x214d95[_0x40064f(0x164)]("afterend", _0x244dcc),
+            (_0x10e784[_0x40064f(0x162)] = _0x244dcc),
+            (_0x4c000e[_0x40064f(0x18a)][_0x40064f(0x167)] = _0x40064f(0x188)),
+            setTimeout(() => {
+              const _0x553d48 = _0x40064f;
+              (_0x393445[_0x553d48(0x18b)] = ![]),
+                (_0x393445[_0x553d48(0x19b)] = _0x553d48(0x166)),
+                (_0x4f5646[_0x553d48(0x19b)] = ""),
+                (_0x214d95["innerText"] = "");
+            }, 0x384);
+        }
+      );
+      async function downloadPDF() {
+        const _0x5bba4f = _0x4251d5,
+          _0x741a4f = document[_0x5bba4f(0x15d)](_0x5bba4f(0x194));
+        if (
+          !_0x741a4f ||
+          _0x741a4f[_0x5bba4f(0x162)][_0x5bba4f(0x169)]() === ""
+        ) {
+          alert(_0x5bba4f(0x14b));
+          return;
+        }
+        const _0x3736cd =
+          _0x741a4f[_0x5bba4f(0x18a)][_0x5bba4f(0x167)] === "none";
+        if (_0x3736cd) _0x741a4f["style"][_0x5bba4f(0x167)] = _0x5bba4f(0x181);
+        _0x741a4f[_0x5bba4f(0x15f)][_0x5bba4f(0x15b)](_0x5bba4f(0x14e));
+        const _0x430fab = document["createElement"](_0x5bba4f(0x18a));
+        (_0x430fab["id"] = "pdfTempStyle"),
+          (_0x430fab[_0x5bba4f(0x15a)] = _0x5bba4f(0x186)),
+          document[_0x5bba4f(0x161)][_0x5bba4f(0x183)](_0x430fab),
+          await new Promise((_0x469f88) => requestAnimationFrame(_0x469f88));
+        try {
+          const _0x25187e = 0x2,
+            _0x2ebfb8 = await html2canvas(_0x741a4f, {
+              scale: _0x25187e,
+              useCORS: !![],
+              backgroundColor: _0x5bba4f(0x18f),
+              scrollY: -window[_0x5bba4f(0x173)],
+            }),
+            _0x5d42dd = document[_0x5bba4f(0x18d)](_0x5bba4f(0x198));
+          (_0x5d42dd[_0x5bba4f(0x191)] = _0x2ebfb8["width"]),
+            (_0x5d42dd[_0x5bba4f(0x18c)] = _0x2ebfb8[_0x5bba4f(0x18c)]);
+          const _0x4240b0 = _0x5d42dd[_0x5bba4f(0x1a2)]("2d");
+          _0x4240b0["drawImage"](_0x2ebfb8, 0x0, 0x0);
+          const _0x4aef24 = _0x5d42dd[_0x5bba4f(0x182)](_0x5bba4f(0x195)),
+            _0x177a91 = new jsPDF({ unit: "pt", format: "a4", compress: !![] }),
+            _0x31d302 = _0x177a91[_0x5bba4f(0x17d)]["pageSize"]["getWidth"](),
+            _0x4864e6 =
+              _0x177a91[_0x5bba4f(0x17d)][_0x5bba4f(0x1a1)][_0x5bba4f(0x16d)](),
+            _0x1802de = _0x31d302 - 0x28,
+            _0x58832c =
+              (_0x2ebfb8[_0x5bba4f(0x18c)] * _0x1802de) /
+              _0x2ebfb8[_0x5bba4f(0x191)];
+          let _0x1846d5 = 0x14,
+            _0x225bc1 = _0x58832c;
+          _0x177a91[_0x5bba4f(0x159)](
+            _0x4aef24,
+            "PNG",
+            0x14,
+            _0x1846d5,
+            _0x1802de,
+            _0x58832c
+          ),
+            (_0x225bc1 -= _0x4864e6);
+          while (_0x225bc1 > 0x0) {
+            (_0x1846d5 = _0x225bc1 - _0x58832c + 0x14),
+              _0x177a91[_0x5bba4f(0x14d)](),
+              _0x177a91[_0x5bba4f(0x159)](
+                _0x4aef24,
+                _0x5bba4f(0x171),
+                0x14,
+                _0x1846d5,
+                _0x1802de,
+                _0x58832c
+              ),
+              (_0x225bc1 -= _0x4864e6);
+          }
+          const _0x3532d0 =
+            _0x5bba4f(0x16e) +
+            new Date()
+              ["toISOString"]()
+              ["slice"](0x0, 0x13)
+              ["replace"](/[:T]/g, "-") +
+            _0x5bba4f(0x16a);
+          _0x177a91[_0x5bba4f(0x193)](_0x3532d0);
+        } catch (_0x5041c8) {
+          console[_0x5bba4f(0x197)]("PDF\x20export\x20failed:", _0x5041c8),
+            alert(
+              "PDF\x20export\x20failed.\x20See\x20console\x20for\x20details."
+            );
+        } finally {
+          _0x741a4f["classList"][_0x5bba4f(0x155)](_0x5bba4f(0x14e));
+          const _0x33345e = document[_0x5bba4f(0x15d)](_0x5bba4f(0x172));
+          if (_0x33345e) _0x33345e["remove"]();
+          if (_0x3736cd)
+            _0x741a4f[_0x5bba4f(0x18a)][_0x5bba4f(0x167)] = _0x5bba4f(0x152);
+        }
+      }
     </script>
   </body>
 </html>
-
-
-
-
