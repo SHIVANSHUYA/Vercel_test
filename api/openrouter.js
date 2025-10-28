@@ -9,19 +9,18 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "openai/gpt-4.1-mini",
         messages: [{ role: "user", content: prompt }]
       })
     });
 
     if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`OpenRouter Error: ${text}`);
+      const errorText = await response.text();
+      throw new Error(`OpenRouter API error: ${errorText}`);
     }
 
     const data = await response.json();
     res.status(200).json({ output: data.choices[0].message.content });
-
   } catch (error) {
     console.error("API Route Error:", error.message);
     res.status(500).json({ error: error.message });
