@@ -383,28 +383,142 @@ Give me a detailed diet chart, workout plan, and health tips suitable for me.
           const aiSuggestionsHTML = marked.parse(aiSuggestions);
 
           resultDiv.querySelector(".final-result")?.remove();
-          const renderedHtml = `
-            <div class="final-result" style="background:#121212;color:#e0e0e0;padding:20px;border-radius:10px;">
-              <h3 style="color:#00ffcc;margin-top:0">Your BMI: ${bmi} (${category})</h3>
-              <p><strong>Age:</strong> ${age}</p>
-              <p><strong>Gender:</strong> ${gender}</p>
-              <p><strong>Height:</strong> ${height} cm</p>
-              <p><strong>Weight:</strong> ${weight} kg</p>
-              <hr style="border-top:1px solid #444;">
-              <h4 style="color:#00ffcc;">AI Health Suggestions</h4>
-              <div>${aiSuggestionsHTML}</div>
-            </div>
-          `;
+     const renderedHtml = `
+      <div class="final-result" style="background:#121212;color:#e0e0e0;padding:20px;border-radius:10px;">
+        <h3 style="color:#00ffcc;margin-top:0">Your BMI: ${bmi} (${category})</h3>
+        <p><strong>Age:</strong> ${age}</p>
+        <p><strong>Gender:</strong> ${gender}</p>
+        <p><strong>Height:</strong> ${height} cm</p>
+        <p><strong>Weight:</strong> ${weight} kg</p>
+        <hr style="border-top:1px solid #444;">
+        <h4 style="color:#00ffcc;">AI Health Suggestions</h4>
+        <div>${aiSuggestionsHTML}</div>
+      </div>
+    `;
 
-          status_in_result.insertAdjacentHTML("afterend", renderedHtml);
-          pdfContent.innerHTML = renderedHtml;
-          downloadBtn.style.display = "inline-block";
+    // ✅ Insert once
+    status_in_result.insertAdjacentHTML("afterend", renderedHtml);
 
-          btn.disabled = false;
-          btn.innerText = "Get My BMI & AI Suggestions";
-          status.innerText = "";
-          status_in_result.innerText = "";
+    // ✅ Update hidden PDF content (no duplication visually)
+    pdfContent.innerHTML = renderedHtml;
+
+    downloadBtn.style.display = "inline-block";
+
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerText = "Get My BMI & AI Suggestions";
+      status.innerText = "";
+      status_in_result.innerText = "";
+    }, 900);
+  });
+
+  async function downloadPDF() {
+  const pdfContent = document.getElementById("pdfContent");
+  if (!pdfContent || pdfContent.innerHTML.trim() === "") {
+    alert("Nothing to export. Generate the report first.");
+    return;
+  }
+
+  // ✅ Temporarily show hidden content for rendering
+  const wasHidden = pdfContent.style.display === "none";
+  if (wasHidden) pdfContent.style.display = "block";
+
+  // 🎨 Apply clean PDF-only styles (scoped and temporary)
+  pdfContent.classList.add("pdf-style-temp");
+
+  const styleTag = document.createElement("style");
+  styleTag.id = "pdfTempStyle";
+  styleTag.textContent = `
+    .pdf-style-temp {
+      background: #ffffff !important;
+      color: #222 !important;
+      font-family: 'Poppins', 'Segoe UI', sans-serif !important;
+      font-size: 11pt !important;
+      line-height: 1.5 !important;
+      padding: 25px !important;
+      border-radius: 12px !important;
+      width: 700px !important;
+      margin: auto !important;
+    }
+    .pdf-style-temp h3, .pdf-style-temp h4 {
+      color: #00bfa6 !important;
+      margin-bottom: 8px !important;
+    }
+    .pdf-style-temp p, .pdf-style-temp li {
+      color: #333 !important;
+      margin-bottom: 6px !important;
+    }
+    .pdf-style-temp strong {
+      color: #00796b !important;
+    }
+    .pdf-style-temp hr {
+      border: none !important;
+      border-top: 1px solid #ddd !important;
+      margin: 12px 0 !important;
+    }
+    .pdf-style-temp ul {
+      margin-left: 20px !important;
+    }
+  `;
+  document.head.appendChild(styleTag);
+
+  await new Promise((r) => requestAnimationFrame(r));
+
+  try {
+    const scale = 2;
+    const canvas = await html2canvas(pdfContent, {
+      scale,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollY: -window.scrollY,
+    });
+
+    // 🩵 Safe redraw
+    const safeCanvas = document.createElement("canvas");
+    safeCanvas.width = canvas.width;
+    safeCanvas.height = canvas.height;
+    const ctx = safeCanvas.getContext("2d");
+    ctx.drawImage(canvas, 0, 0);
+    const imgData = safeCanvas.toDataURL("image/png");
+
+    // 🧾 Create PDF
+    const pdf = new jsPDF({ unit: "pt", format: "a4", compress: true });
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pdfWidth - 40; // padding
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let position = 20;
+    let heightLeft = imgHeight;
+
+    pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight + 20;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 20, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+    }
+
+    const filename = `AI_Health_Report_${new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace(/[:T]/g, "-")}.pdf`;
+    pdf.save(filename);
+  } catch (err) {
+    console.error("PDF export failed:", err);
+    alert("PDF export failed. See console for details.");
+  } finally {
+    // ♻️ Clean up temporary styles
+    pdfContent.classList.remove("pdf-style-temp");
+    const tempStyle = document.getElementById("pdfTempStyle");
+    if (tempStyle) tempStyle.remove();
+    if (wasHidden) pdfContent.style.display = "none";
+  }
+}
+
         });
     </script>
   </body>
 </html>
+
