@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "openai/gpt-4.1-mini",
+        model: "kwaipilot/kat-coder-pro:free",
         messages: [{ role: "user", content: prompt }]
       })
     });
@@ -26,3 +26,4 @@ export default async function handler(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
